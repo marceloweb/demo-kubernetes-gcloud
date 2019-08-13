@@ -1,0 +1,58 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        name: twitter-pod
+    spec:
+      containers:
+       - name: container-twitter
+         image: marceloweb/twitter:1.0
+         ports:
+           - containerPort: 80
+         env:
+         - name: DB_HOST
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: dbhost
+         - name: DB_USER
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: dbuser
+         - name: DB_PASSWD
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: dbpasswd
+         - name: DBNAME
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: dbname     
+         - name: DB_DRIVER
+           value: mysql
+         - name: ACCESS_TOKEN
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: twitter_access_token
+         - name: ACCESS_TOKEN_SECRET
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: twitter_access_token_secret
+         - name: CONSUMER_KEY
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: twitter_consumer_key
+         - name: CONSUMER_SECRET
+           valueFrom:
+             secretKeyRef:
+               name: credentials
+               key: twitter_consumer_key_secret
